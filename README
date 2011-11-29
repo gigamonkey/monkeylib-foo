@@ -1,0 +1,6 @@
+This code is basically deprecated. Much of the good stuff has been
+moved out into separate projects, monkeylib-text-output,
+monkeylib-text-languages, and monkeylib-html. There is still stuff in
+here for generating CSS and Javascript as well as my goofy Lispscript
+language but as I'm not sure how useful that is, I'm don't have any
+immediate plans to break them out as separate projects.
