@@ -26,9 +26,8 @@
 
 (defpackage :com.gigamonkeys.foo.language
   (:use :cl
-	:com.gigamonkeys.macro-utilities
-	:com.gigamonkeys.foo.text-output)
-  (:export 
+        :com.gigamonkeys.foo.text-output)
+  (:export
    :case-preserving-readtable
    :comment
    :compile-special-op-body
@@ -63,48 +62,45 @@
 
 (defpackage :com.gigamonkeys.foo.xml
   (:use :common-lisp
-	:com.gigamonkeys.macro-utilities
-	:com.gigamonkeys.utilities
-	:com.gigamonkeys.foo.text-output
-	:com.gigamonkeys.foo.language
-	:com.gigamonkeys.test
-	:com.gigamonkeys.pathnames)
+        :com.gigamonkeys.utilities
+        :com.gigamonkeys.foo.text-output
+        :com.gigamonkeys.foo.language
+        :com.gigamonkeys.test
+        :com.gigamonkeys.pathnames)
   (:export
-   :&attributes 
-   :cons-form-p 
-   :define-html-macro 
-   :define-xml-macro 
+   :&attributes
+   :cons-form-p
+   :define-html-macro
+   :define-xml-macro
    :define-xml-language
-   :emit-html 
-   :emit-xml 
-   :emit-xhtml 
-   :html 
-   :in-html-style 
-   :parse-cons-form 
-   :with-html-output 
-   :with-html-to-file 
+   :emit-html
+   :emit-xml
+   :emit-xhtml
+   :html
+   :in-html-style
+   :parse-cons-form
+   :with-html-output
+   :with-html-to-file
    :xhtml
    :xml))
 
 (defpackage :com.gigamonkeys.foo.css
   (:use :common-lisp
-	:com.gigamonkeys.macro-utilities
-	:com.gigamonkeys.utilities
-	:com.gigamonkeys.foo.text-output
-	:com.gigamonkeys.foo.language)
+        :com.gigamonkeys.utilities
+        :com.gigamonkeys.foo.text-output
+        :com.gigamonkeys.foo.language)
   (:export
    :emit-css
    :css))
 
 (defpackage :com.gigamonkeys.foo
   (:use :common-lisp
-	:com.gigamonkeys.foo.xml
-	:com.gigamonkeys.foo.css
-	:com.gigamonkeys.macro-utilities
-	:com.gigamonkeys.utilities
-	:com.gigamonkeys.foo.text-output
-	:com.gigamonkeys.foo.language)
-  (:export 
+        :com.gigamonkeys.foo.xml
+        :com.gigamonkeys.foo.css
+        :com.gigamonkeys.utilities
+        :com.gigamonkeys.foo.text-output
+        :com.gigamonkeys.foo.language)
+  (:export
    :&attributes
    :compile-javascript
    :cons-form-p
@@ -135,12 +131,11 @@
 
 (defpackage com.gigamonkeys.foo.javascript
   (:use :common-lisp
-	:com.gigamonkeys.foo
-	:com.gigamonkeys.macro-utilities
-	:com.gigamonkeys.utilities
-	:com.gigamonkeys.foo.text-output
-	:com.gigamonkeys.foo.language)
-  (:export 
+        :com.gigamonkeys.foo
+        :com.gigamonkeys.utilities
+        :com.gigamonkeys.foo.text-output
+        :com.gigamonkeys.foo.language)
+  (:export
    :javascript
    :define-javascript-macro
    :javascript-gensym
@@ -148,91 +143,90 @@
    :method
 
    ;; Special operators
-   :! 
-   :!= 
-   :!=== 
-   :% 
-   :%= 
-   :& 
-   :&& 
-   :&= 
-   :* 
-   :*= 
-   :+ 
-   :++ 
-   :+= 
-   :- 
-   :-- 
-   :-= 
-   :/ 
-   :/= 
-   :< 
-   :<< 
-   :<<= 
-   :<= 
-   := 
-   :== 
-   :=== 
-   :> 
-   :>= 
-   :>> 
-   :>>= 
-   :>>> 
-   :>>>= 
-   :? 
-   :@ 
-   :\| 
-   :\|= 
-   :\|\| 
-   :^ 
-   :^= 
+   :!
+   :!=
+   :!===
+   :%
+   :%=
+   :&
+   :&&
+   :&=
+   :*
+   :*=
+   :+
+   :++
+   :+=
+   :-
+   :--
+   :-=
+   :/
+   :/=
+   :<
+   :<<
+   :<<=
+   :<=
+   :=
+   :==
+   :===
+   :>
+   :>=
+   :>>
+   :>>=
+   :>>>
+   :>>>=
+   :?
+   :@
+   :\|
+   :\|=
+   :\|\|
+   :^
+   :^=
    :~
    :augment-environment ;; doesn't map to javascript construct
-   :array 
-   :block 
-   :break 
+   :array
+   :block
+   :break
    :comment
-   :continue 
-   :delete 
-   :do-while 
-   :for 
-   :function 
-   :function 
-   :if 
-   :in 
-   :instanceof 
-   :label 
-   :new 
-   :object 
-   :prog 
-   :progn 
-   :progn 
-   :ref 
-   :return 
-   :switch 
-   :throw 
-   :try 
-   :typeof 
-   :var 
-   :void 
-   :while 
+   :continue
+   :delete
+   :do-while
+   :for
+   :function
+   :function
+   :if
+   :in
+   :instanceof
+   :label
+   :new
+   :object
+   :prog
+   :progn
+   :progn
+   :ref
+   :return
+   :switch
+   :throw
+   :try
+   :typeof
+   :var
+   :void
+   :while
    :with))
 
 
 (defpackage com.gigamonkeys.foo.lispscript
   (:use :common-lisp
-	:com.gigamonkeys.foo.language
-	:com.gigamonkeys.foo.javascript)
+        :com.gigamonkeys.foo.language
+        :com.gigamonkeys.foo.javascript)
   (:shadow :=)
   (:export :*lispscript*))
 
 
 (defpackage com.gigamonkeys.foo.lispscript-tests
   (:use :common-lisp
-	:com.gigamonkeys.foo
-	:com.gigamonkeys.foo.xml
-	:com.gigamonkeys.foo.javascript
-	:com.gigamonkeys.foo.lispscript))
+        :com.gigamonkeys.foo
+        :com.gigamonkeys.foo.xml
+        :com.gigamonkeys.foo.javascript
+        :com.gigamonkeys.foo.lispscript))
 
 (defpackage com.gigamonkeys.foo.javascript.tokens (:use))
-
