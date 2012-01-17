@@ -49,31 +49,31 @@
 
 (defmethod top-level-environment ((language xhtml))
   (new-env
-   'block-elements 
+   'block-elements
    '(:body :colgroup :div :dl :fieldset :form :head :html :map :noscript
      :object :ol :optgroup :pre :script :select :style :table :tbody
      :tfoot :thead :tr :ul)
-   (new-env 
+   (new-env
     'paragraph-elements
     '(:area :base :blockquote :br :button :caption :col :dd :div :dt :h1
       :h2 :h3 :h4 :h5 :h6 :hr :input :li :link :meta :option :p :param
       :td :textarea :th :title)
-    (new-env 
+    (new-env
      'preserve-whitespace-elements
      '(:pre :script :style :textarea)
-     (new-env 
+     (new-env
       'inline-elements
       '(:a :abbr :acronym :address :b :bdo :big :cite :code :del :dfn :em
-	:i :img :ins :kbd :label :legend :q :samp :small :span :strong :sub
-	:sup :tt :var)
+        :i :img :ins :kbd :label :legend :q :samp :small :span :strong :sub
+        :sup :tt :var)
       (new-env
        'non-empty-elements
        '(:script :style :textarea)
        (call-next-method)))))))
 
 (defmethod top-level-environment ((language html))
-  (new-env 
-   'empty-elements 
+  (new-env
+   'empty-elements
    '(:area :base :br :col :hr :img :input :link :meta :param)
    (call-next-method)))
 
@@ -91,13 +91,13 @@
       `(define-macro ,name html-macro (,@parameters) ,@body))))
 
 (defun generate-html-macro-with-attributes (name attributes parameters body)
-  (with-gensyms (form all tag tag-body)
+  (with-unique-names (form all tag tag-body)
     `(define-macro ,name html-macro (&whole ,form &body ,all)
        (declare (ignore ,all))
        (multiple-value-bind (,tag ,attributes ,tag-body) (parse-cons-form ,form)
-	 (declare (ignore ,tag))
-	 (destructuring-bind (,@parameters) ,tag-body
-	   ,@body)))))
+         (declare (ignore ,tag))
+         (destructuring-bind (,@parameters) ,tag-body
+           ,@body)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Special Forms
@@ -136,4 +136,3 @@
 (define-html-special-operator :newline (language processor)
   (declare (ignore language))
   (newline processor))
-

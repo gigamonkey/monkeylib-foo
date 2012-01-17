@@ -12,7 +12,7 @@
   `(with-foo-output (,stream :pretty ,pretty) ,@body))
 
 (defmacro with-html-to-file ((file &key (pretty *pretty*)) &body body)
-  (with-gensyms (stream)
+  (with-unique-names (stream)
     `(with-open-file (,stream ,file :direction :output :if-exists :supersede)
       (with-foo-output (,stream :pretty ,pretty)
         ,@body))))
@@ -24,7 +24,6 @@
 (define-html-special-operator :with-language (language processor (new-language) &body body)
   (declare (ignore language))
   (let ((new-language (if (boundp new-language)
-		      (symbol-value new-language)
-		      new-language)))
+                      (symbol-value new-language)
+                      new-language)))
     (loop for exp in body do (process new-language processor exp (top-level-environment new-language)))))
-

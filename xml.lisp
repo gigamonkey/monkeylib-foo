@@ -181,7 +181,7 @@
       `(define-macro ,name xml-macro (,@parameters) ,@body))))
 
 (defun generate-macro-with-attributes (name attributes parameters body)
-  (with-gensyms (form all tag tag-body)
+  (with-unique-names (form all tag tag-body)
     `(define-macro ,name xml-macro (&whole ,form &body ,all)
        (declare (ignore ,all))
        (multiple-value-bind (,tag ,attributes ,tag-body) (parse-cons-form ,form)
@@ -233,5 +233,4 @@
        (process language processor exp (in-attribute env))))
 
 (define-xml-special-operator :newline (language processor)
-  (declare (ignore language))
   (newline processor))

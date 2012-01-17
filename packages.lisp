@@ -26,6 +26,7 @@
 
 (defpackage :com.gigamonkeys.foo.language
   (:use :cl
+        :com.gigamonkeys.utilities
         :com.gigamonkeys.foo.text-output)
   (:export
    :case-preserving-readtable

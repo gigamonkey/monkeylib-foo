@@ -149,14 +149,14 @@ implemented by a method on PROCESS-SEXP."
 (defmethod special-form-p ((language t) (form cons))
   (let ((identifier (identifier language form)))
     (and identifier
-	 (get identifier (special-operator-symbol language)))))
+         (get identifier (special-operator-symbol language)))))
 
 (defmethod macro-form-p ((language t) (form t)) nil)
 
 (defmethod macro-form-p ((language t) (form cons))
   (let ((identifier (identifier language form)))
     (and identifier
-	 (get identifier (macro-symbol language)))))
+         (get identifier (macro-symbol language)))))
 
 (defmethod sexp-form-p ((language t) form)
   "Suitable default for languages in which all forms that are not
@@ -177,19 +177,19 @@ characters will need their own specializations of this method."
 ;;; definitional macros that will expand into these two macros.
 
 (defmacro define-special-operator (name special-operator-symbol (language processor &rest other-parameters) &body body)
-  (with-gensyms (whole)
+  (with-unique-names (whole)
     (multiple-value-bind (parameters environment) (parse-&environment other-parameters)
       `(eval-when (:compile-toplevel :load-toplevel :execute)
-	 (setf (get ',name ',special-operator-symbol)
-	       (lambda (,language ,processor ,whole ,environment)
-		 (declare (ignorable ,environment))
-		 (handler-case
-		     (destructuring-bind (,@parameters) (rest ,whole)
-		       ,@body)
-		   (error (e)
-		     (error 'foo-syntax-error :form ,whole :cause e)))))))))
+         (setf (get ',name ',special-operator-symbol)
+               (lambda (,language ,processor ,whole ,environment)
+                 (declare (ignorable ,environment))
+                 (handler-case
+                     (destructuring-bind (,@parameters) (rest ,whole)
+                       ,@body)
+                   (error (e)
+                     (error 'foo-syntax-error :form ,whole :cause e)))))))))
 
-(define-condition foo-syntax-error () 
+(define-condition foo-syntax-error ()
   ((form :initarg :form :accessor form-of)
    (cause :initarg :cause :accessor cause-of :initform nil)))
 
@@ -198,18 +198,18 @@ characters will need their own specializations of this method."
     (format stream "in form: ~s; caused by: ~a" (form-of c) (cause-of c))))
 
 (defmacro define-macro (name macro-symbol (&rest parameters) &body body)
-  (with-gensyms (whole namevar)
+  (with-unique-names (whole namevar)
     (multiple-value-bind (parameters environment) (parse-&environment parameters)
       `(eval-when (:compile-toplevel :load-toplevel :execute)
-	 (setf (get ',name ',macro-symbol)
-	       (lambda (,whole ,environment)
-		 (declare (ignorable ,environment))
-		 (handler-case
-		     (destructuring-bind (,@(normalize-macro-lambda-list parameters namevar)) ,whole
-		       (declare (ignore ,namevar))
-		       ,@body)
-		   (error (e)
-		     (error 'foo-syntax-error :form ,whole :cause e)))))))))
+         (setf (get ',name ',macro-symbol)
+               (lambda (,whole ,environment)
+                 (declare (ignorable ,environment))
+                 (handler-case
+                     (destructuring-bind (,@(normalize-macro-lambda-list parameters namevar)) ,whole
+                       (declare (ignore ,namevar))
+                       ,@body)
+                   (error (e)
+                     (error 'foo-syntax-error :form ,whole :cause e)))))))))
 
 (defun parse-&environment (parameters)
   "Parse out an optional &environment parameter and return the
@@ -226,7 +226,7 @@ parameter list without it and the name of the parameter."
 macro form, including an optional &whole parameter and a
 parameter to eat up the macro name."
   (let* ((back (if (eql (car parameters) '&whole) (cddr parameters) parameters))
-	 (front (ldiff parameters back)))
+         (front (ldiff parameters back)))
     `(,@front ,namevar ,@back)))
 
 (defun self-evaluating-p (form)
@@ -244,14 +244,14 @@ parameter to eat up the macro name."
   "Code generator generator."
   (loop for thing in body collect
        (etypecase thing
-	 (string `(raw-string ,processor ,thing ,(not (not (find #\Newline thing)))))
-	 (cons thing)
-	 (keyword
-	  (ecase thing
-	    (:newline `(newline ,processor))
-	    (:freshline `(freshline ,processor))
-	    (:indent `(indent ,processor))
-	    (:unindent `(unindent ,processor)))))))
+         (string `(raw-string ,processor ,thing ,(not (not (find #\Newline thing)))))
+         (cons thing)
+         (keyword
+          (ecase thing
+            (:newline `(newline ,processor))
+            (:freshline `(freshline ,processor))
+            (:indent `(indent ,processor))
+            (:unindent `(unindent ,processor)))))))
 
 (defun case-preserving-readtable ()
   (let ((readtable (copy-readtable)))
@@ -262,7 +262,7 @@ parameter to eat up the macro name."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Helpers for top-level language functions and macros.
 
-(defun emit-for-language (language-class sexp) 
+(defun emit-for-language (language-class sexp)
   (let ((lang (make-instance language-class)))
     (process lang (get-pretty-printer) sexp (top-level-environment lang))))
 
@@ -275,11 +275,10 @@ parameter to eat up the macro name."
 (defmacro define-language-macro (name)
   `(defmacro ,name (&whole whole &body body)
      (declare (ignore body))
-     `(macrolet ((,(car whole) (&body body) 
-		   (let* ((lang (make-instance ',(car whole)))
-			  (env (top-level-environment lang)))
-		     (codegen-text (sexp->ops lang body env) ,*pretty*))))
-	,@(if *pretty*
-	      `((let ((*text-pretty-printer* (get-pretty-printer))) ,whole))
-	      `(,whole)))))
-
+     `(macrolet ((,(car whole) (&body body)
+                   (let* ((lang (make-instance ',(car whole)))
+                          (env (top-level-environment lang)))
+                     (codegen-text (sexp->ops lang body env) ,*pretty*))))
+        ,@(if *pretty*
+              `((let ((*text-pretty-printer* (get-pretty-printer))) ,whole))
+              `(,whole)))))
